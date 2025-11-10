@@ -1,0 +1,17 @@
+name: LinkBuilderFlow
+description: Autonomous link-building workflow for build-a-dress.com
+
+steps:
+  - name: Find Prospects
+    run: .cursor/commands/find-prospects.md
+
+  - name: Map Blog Content
+    run: .cursor/commands/content-mapper.md
+
+  - name: Generate Outreach
+    run: .cursor/commands/outreach-writer.md
+    confirm_before_next: true
+
+  - name: Submit Outreach
+    run: .cursor/commands/submitter.md
+
