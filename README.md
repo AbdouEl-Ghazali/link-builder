@@ -4,7 +4,7 @@
 
 **Automated backlink builder** that utilizes Cursor agents to find backlink opportunities, generates personalized outreach messages, and **automatically sends emails** to get backlinks. 
 
-**Quick workflow**: Run `/find-prospects` and/or `/find-prospects-haro` → `/content-mapper` → `/outreach-writer` → `/submitter` in Cursor. Configure SMTP in `.env` for automatic sending, or copy-paste messages manually. All results tracked in `data/outreach_log.csv`.
+**Quick workflow**: Type these Cursor commands `/find-prospects` and/or `/find-prospects-haro` → `/content-mapper` → `/outreach-writer` → `/submitter` in Cursor. Configure SMTP in `.env` for automatic sending, or copy-paste messages manually. All results tracked in `data/outreach_log.csv`.
 
 ---
 
