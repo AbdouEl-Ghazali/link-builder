@@ -22,12 +22,12 @@ prompt: |
        "to": "contact@example.com",
        "contact_form_url": null,
        "subject": "Loved your post on eco-friendly fashion 🌿",
-       "message": "Hi [Name], I read your article on sustainable clothing. We recently published a guide on sustainable dress materials that might make a great resource: https://build-a-dress.com/blog/sustainable-fabrics.",
+       "message": "Hi [Name], I read your article on sustainable clothing. We recently published a guide on sustainable materials that might make a great resource: [CONTENT_URL].",
        "matched_content_title": "How to Choose Sustainable Fabrics",
-       "matched_content_url": "https://build-a-dress.com/blog/sustainable-fabrics"
+       "matched_content_url": "[CONTENT_URL from content_summaries.json]"
      }
 
   5. Save all messages as a JSON array to data/outreach_messages.json.
 
-  6. Personalize each message - avoid generic templates. Reference specific content from the prospect's site when possible. NEVER ask for interviews. You may propose written answers to any of their questions. You may propose sharing blog articles that already exist on build-a-dress.com (found in the content_summaries.json)
+  6. Personalize each message - avoid generic templates. Reference specific content from the prospect's site when possible. NEVER ask for interviews. You may propose written answers to any of their questions. You may propose sharing blog articles that already exist (found in the content_summaries.json). Use the actual URLs from content_summaries.json - do not hardcode domain names.
 

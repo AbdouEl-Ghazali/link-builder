@@ -1,13 +1,18 @@
 # Execute Link Builder Workflow
 
-Execute the WorkflowOrchestrator agent to run the complete link-building workflow for build-a-dress.com. The workflow consists of 4 sequential steps, each executed as a separate agent.
+The workflow consists of 4 sequential steps, each executed as a separate agent.
+
+**Configuration Required:**
+- TARGET_DOMAIN: Your domain (e.g., "your-domain.com")
+- BLOG_URL: Your blog URL (e.g., "https://your-domain.com/blog")
+- BUSINESS_NAME: Your business name
 
 ## Execution Steps
 
 ### Step 1: Prospect Finding
 
 - Execute the ProspectFinder agent (`.cursor/commands/find-prospects.md`)
-- Use browser to search Google for keywords found on build-a-dress.com
+- Use browser to search Google for keywords found on your website
 - For each relevant result, extract:
 - Site name, homepage URL, contact email/form URL, relevance notes
 - Save results to `data/prospects.json` as JSON array
@@ -16,7 +21,7 @@ Execute the WorkflowOrchestrator agent to run the complete link-building workflo
 ### Step 2: Content Mapping
 
 - Execute the ContentMapper agent (`.cursor/commands/content-mapper.md`)
-- Use browser to visit `https://build-a-dress.com/blog`
+- Use browser to visit your blog URL (from BLOG_URL environment variable)
 - Extract for each blog post:
 - Title, URL, 2-3 sentence summary, topics/keywords
 - Save results to `data/content_summaries.json` as JSON array

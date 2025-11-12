@@ -12,10 +12,14 @@ prompt: |
 
   ## HARO Prospect Finding
 
-  1. **FIRST: Extract keywords from build-a-dress.com content**:
+  **Configuration Required:**
+  - TARGET_DOMAIN: The domain to build links for (e.g., "your-domain.com")
+  - If not set, ask the user for their domain
+
+  1. **FIRST: Extract keywords from your content**:
      - Read `data/content_summaries.json`
      - Extract all unique topics/keywords from all entries
-     - These keywords represent the focus areas of build-a-dress.com
+     - These keywords represent the focus areas of your business/website
      - Use these keywords as reference when manually reviewing HARO queries (they are NOT used for automatic filtering)
 
   2. **THEN: Run the script to fetch HARO emails (ONLY IF haro_emails.md doesn't exist)**:
@@ -34,7 +38,7 @@ prompt: |
   3. **THEN: Review HARO queries in chat and extract prospects manually**:
      - Read `data/haro_emails.md` to see all HARO queries (formatted markdown)
      - Review all HARO queries in the markdown file
-     - For each query, manually determine relevance based on the keywords extracted from build-a-dress.com
+     - For each query, manually determine relevance based on the keywords extracted from your content
      - If relevant, extract prospect information:
        - Reporter/journalist name
        - Publication/outlet name
@@ -77,14 +81,14 @@ prompt: |
   ## Workflow
 
   **Execution Steps:**
-  1. **Extract keywords from build-a-dress.com**:
+  1. **Extract keywords from your content**:
      - Read `data/content_summaries.json`
      - Collect all unique topics/keywords from all blog post entries
      - These keywords will guide your manual relevance assessment
 
   2. **Run the script** to fetch HARO emails (ONLY IF haro_emails.md doesn't exist):
      - **FIRST**: Check if `data/haro_emails.md` exists
-     - **IF it exists**: Skip running the script and read the existing file
+     - **IF it exists**: Run the script collecting only after the last email date and THEN read the existing file
      - **IF it doesn't exist**: Run the script:
        ```bash
        python scripts/find_prospects_haro.py
@@ -96,7 +100,7 @@ prompt: |
 
   3. **Review queries in chat and extract prospects manually**:
      - Review the formatted HARO queries displayed in chat
-     - For each query, assess relevance using the keywords from build-a-dress.com as inspiration
+     - For each query, assess relevance using the keywords from your content as inspiration
      - Do not use any filtering or commands for this step
      - Manually extract prospect information from relevant queries:
        - Look for reporter name, publication name, email, URL in the query text
@@ -108,5 +112,5 @@ prompt: |
      - Check new prospects in `data/prospects.json`
      - Verify all relevant prospects were captured
 
-  **Note**: The script fetches all HARO queries and saves them to `data/haro_emails.md` (runs only once). You (the agent) manually review the markdown file and extract relevant prospects. This approach allows for nuanced relevance assessment based on build-a-dress.com's actual content focus. To re-run the script, delete `data/haro_emails.md` first.
+  **Note**: The script fetches all HARO queries and saves them to `data/haro_emails.md` (runs only once). You (the agent) manually review the markdown file and extract relevant prospects. This approach allows for nuanced relevance assessment based on your actual content focus. To re-run the script, delete `data/haro_emails.md` first.
 

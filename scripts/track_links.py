@@ -3,10 +3,11 @@
 Backlink tracking script for link-building workflow.
 
 Reads prospects.json and checks which sites now contain backlinks
-to build-a-dress.com. Uses standard library only for minimal dependencies.
+to your target domain. Uses standard library only for minimal dependencies.
 """
 
 import json
+import os
 import urllib.request
 import urllib.parse
 import urllib.error
@@ -14,9 +15,20 @@ import re
 from datetime import datetime
 from pathlib import Path
 
+# Try to load .env file if python-dotenv is available
+try:
+    from dotenv import load_dotenv
+    # Load .env file from project root
+    env_path = Path(__file__).parent.parent / ".env"
+    if env_path.exists():
+        load_dotenv(env_path)
+except ImportError:
+    # python-dotenv not installed, skip .env loading
+    pass
+
 # Configuration
 PROSPECTS_FILE = Path(__file__).parent.parent / "data" / "prospects.json"
-TARGET_DOMAIN = "build-a-dress.com"
+TARGET_DOMAIN = os.getenv("TARGET_DOMAIN", "your-domain.com")
 OUTPUT_FILE = Path(__file__).parent.parent / "data" / "backlink_check.json"
 
 
@@ -57,7 +69,13 @@ def check_backlink(html_content, target_domain):
 
 def main():
     """Main tracking function."""
+    if TARGET_DOMAIN == "your-domain.com":
+        print("Error: TARGET_DOMAIN not configured.")
+        print("Set TARGET_DOMAIN environment variable or add it to your .env file.")
+        return
+    
     print(f"Reading prospects from {PROSPECTS_FILE}")
+    print(f"Checking for backlinks to {TARGET_DOMAIN}")
     
     if not PROSPECTS_FILE.exists():
         print(f"Error: {PROSPECTS_FILE} not found")
@@ -116,4 +134,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
 

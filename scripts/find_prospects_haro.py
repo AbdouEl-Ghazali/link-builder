@@ -42,6 +42,9 @@ IMAP_PORT = int(os.getenv("IMAP_PORT", "993"))
 EMAIL_USER = os.getenv("SMTP_USER", "")
 EMAIL_PASSWORD = os.getenv("SMTP_PASSWORD", "")
 
+# Business Configuration
+TARGET_DOMAIN = os.getenv("TARGET_DOMAIN", "your-domain.com")
+
 # HARO email patterns (common HARO sender addresses)
 HARO_SENDER_PATTERNS = [
     "helpareporter",
@@ -216,7 +219,7 @@ def extract_queries_from_email(email_body: str) -> List[Dict[str, Any]]:
 
 def extract_keywords_from_content() -> List[str]:
     """
-    Extract unique keywords from build-a-dress.com content summaries.
+    Extract unique keywords from your content summaries.
     
     Reads data/content_summaries.json and collects all unique topics/keywords.
     
@@ -563,7 +566,8 @@ def main():
     # Extract keywords from content summaries (for reference, displayed in stderr)
     keywords = extract_keywords_from_content()
     if keywords:
-        print(f"\nExtracted {len(keywords)} keywords from build-a-dress.com content:", file=sys.stderr)
+        domain_display = TARGET_DOMAIN if TARGET_DOMAIN != "your-domain.com" else "your content"
+        print(f"\nExtracted {len(keywords)} keywords from {domain_display} content:", file=sys.stderr)
         print("Keywords:", ", ".join(keywords[:20]), file=sys.stderr)
         if len(keywords) > 20:
             print(f"... and {len(keywords) - 20} more", file=sys.stderr)

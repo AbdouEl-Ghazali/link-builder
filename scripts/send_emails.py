@@ -40,7 +40,9 @@ SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
 SMTP_USER = os.getenv("SMTP_USER", "")
 SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
 SMTP_FROM_EMAIL = os.getenv("SMTP_FROM_EMAIL", SMTP_USER)
-SMTP_FROM_NAME = os.getenv("SMTP_FROM_NAME", "Build-a-Dress Team")
+# SENDER_NAME defaults to BUSINESS_NAME if not set, otherwise uses SMTP_FROM_NAME
+BUSINESS_NAME = os.getenv("BUSINESS_NAME", "")
+SENDER_NAME = os.getenv("SENDER_NAME") or os.getenv("SMTP_FROM_NAME") or BUSINESS_NAME or "Your Business"
 SMTP_USE_TLS = os.getenv("SMTP_USE_TLS", "true").lower() == "true"
 
 # Domain validation timeout (seconds)
@@ -264,7 +266,7 @@ def process_messages():
         print("  - SMTP_USER (your email)")
         print("  - SMTP_PASSWORD (your email password or app password)")
         print("  - SMTP_FROM_EMAIL (default: SMTP_USER)")
-        print("  - SMTP_FROM_NAME (default: Build-a-Dress Team)")
+        print("  - SMTP_FROM_NAME or SENDER_NAME (default: BUSINESS_NAME or 'Your Business')")
         print("  - SMTP_USE_TLS (default: true)")
         print("\nSkipping email sending. Only contact forms will be processed.")
         return
