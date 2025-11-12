@@ -28,7 +28,7 @@ prompt: |
      - **IF it doesn't exist**: Execute: `python scripts/find_prospects_haro.py`
      - This script:
        - Connects to email via IMAP using the same credentials as the submitter (SMTP_USER and SMTP_PASSWORD)
-       - Searches for HARO emails in the inbox (last 30 days by default)
+       - Searches for HARO emails in the inbox (last 30 days by default, or from INITIAL_START_DATE if set)
        - Loads entire HARO email bodies (no query extraction)
        - **Outputs entire emails as markdown to `data/haro_emails.md`** (formatted for easy review)
        - **Outputs status messages to stderr** (displayed in chat)
@@ -53,6 +53,7 @@ prompt: |
      - IMAP_PORT (default: 993)
      - SMTP_USER (your email address - same as submitter)
      - SMTP_PASSWORD (your email password or app password - same as submitter)
+     - INITIAL_START_DATE (optional): The earliest date to search for HARO emails when first running the script (format: YYYY-MM-DD). If set, this date will be used instead of the default 30 days back. Example: INITIAL_START_DATE=2024-01-01
 
   5. **Output Format**:
      - **Prospects** are added to `data/prospects.json` with the standard structure:

@@ -46,6 +46,9 @@ EMAIL_PASSWORD = os.getenv("SMTP_PASSWORD", "")
 # Business Configuration
 TARGET_DOMAIN = os.getenv("TARGET_DOMAIN", "your-domain.com")
 
+# HARO Email Search Configuration
+INITIAL_START_DATE_STR = os.getenv("INITIAL_START_DATE", "")
+
 # HARO email patterns (common HARO sender addresses)
 HARO_SENDER_PATTERNS = [
     "helpareporter",
@@ -305,12 +308,10 @@ def search_haro_emails(mail: imaplib.IMAP4_SSL, days_back: int = 30, since_date:
         
         # Use since_date if provided, otherwise use days_back
         if since_date:
-            # IMAP SINCE is inclusive, so add 1 day to get emails AFTER the latest date
-            from datetime import timedelta
-            date_after = since_date + timedelta(days=1)
+            # IMAP SINCE is inclusive, so use the date directly
             # Format date for IMAP search (format: DD-MMM-YYYY)
-            date_since = date_after.strftime("%d-%b-%Y")
-            print(f"Searching for emails since {date_since} (after latest email date {since_date.strftime('%Y-%m-%d')})...", file=sys.stderr)
+            date_since = since_date.strftime("%d-%b-%Y")
+            print(f"Searching for emails since {date_since} (from {since_date.strftime('%Y-%m-%d')})...", file=sys.stderr)
         else:
             # Search for emails from last N days
             from datetime import timedelta
@@ -658,6 +659,15 @@ def append_emails_to_markdown(new_emails: List[Dict[str, Any]]) -> bool:
 
 def main():
     """Main entry point - fetches HARO emails and outputs as markdown file."""
+    # Parse INITIAL_START_DATE if set
+    initial_start_date = None
+    if INITIAL_START_DATE_STR:
+        try:
+            initial_start_date = datetime.strptime(INITIAL_START_DATE_STR, "%Y-%m-%d")
+            print(f"Using INITIAL_START_DATE: {initial_start_date.strftime('%Y-%m-%d')}", file=sys.stderr)
+        except ValueError:
+            print(f"Warning: Invalid INITIAL_START_DATE format '{INITIAL_START_DATE_STR}'. Expected YYYY-MM-DD. Ignoring.", file=sys.stderr)
+    
     # Check if output file already exists and get latest email date
     latest_date = None
     is_incremental = False
@@ -687,9 +697,15 @@ def main():
         return
     
     try:
-        # Search for HARO emails (with date filter if incremental)
+        # Search for HARO emails (with date filter if incremental or initial start date)
         if is_incremental and latest_date:
-            haro_email_ids = search_haro_emails(mail, since_date=latest_date)
+            # For incremental updates, search for emails AFTER the latest date
+            from datetime import timedelta
+            search_date = latest_date + timedelta(days=1)
+            haro_email_ids = search_haro_emails(mail, since_date=search_date)
+        elif initial_start_date:
+            # Use initial start date for first run (inclusive - search from this date)
+            haro_email_ids = search_haro_emails(mail, since_date=initial_start_date)
         else:
             haro_email_ids = search_haro_emails(mail, days_back=30)
         
